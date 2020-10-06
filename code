@@ -1,0 +1,30 @@
+import matplotlib.pyplot as plt
+import numpy as np
+
+tau = 104
+sigma = 1
+b = 0
+
+var = tau * sigma**2 / 2
+mu = tau * b
+
+ndays = int(7*365/5+1)
+itv = 5
+
+M = np.zeros(ndays)
+M[0] = np.random.normal(mu, np.sqrt(var), 1)
+for i in range (1,ndays,1):
+    expect = np.exp(-itv/tau) * M[i-1] + b * tau * (1-np.exp(-itv/tau))
+    std = np.sqrt( tau * sigma**2 / 2 * (1-np.exp(-2*itv/tau)) )
+    M[i] = np.random.normal(expect, std, 1)
+
+plt.figure(figsize=(10,6))
+z = np.arange(0, 7*365+1, 5)
+plt.plot(z, M, label=r'$\tau = t_{orb} = 104 days$', color='black')
+
+plt.xlabel(r'Time [days]')
+plt.ylabel(r'Flux [arbitrary unit]')
+plt.legend()
+plt.show()
+
+    
